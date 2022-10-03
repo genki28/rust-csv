@@ -1,18 +1,17 @@
+mod parser;
+
 extern crate csv;
 use csv::Error;
+use std::env;
+use std::fs::File;
 
 fn main() -> Result<(), Error> {
-  let csv = "year,name
-                  2020,令和
-                  1989,平成
-                  1926 昭和
-                  1912 大正
-                  1897 明治";
-  let mut reader = csv::Reader::from_reader(csv.as_bytes());
-  for record in reader.records() {
-    let record = record?;
-    println!("In {}, {}", &record[0], &record[1]);
-  }
+  let args: Vec<String> = env::args().collect();
+  let filename = &args[1];
+  let f = File::open(filename).expect("file not found");
+  let reader = csv::Reader::from_reader(f);
+  let res = parser::parse(reader);
+  println!("{:?}", res);
 
   Ok(())
 }
