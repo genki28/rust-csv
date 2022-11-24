@@ -26,6 +26,4 @@ fn csv_to_json() {
   let f = File::open(filename).expect("file not found");
   let reader = csv::Reader::from_reader(f);
   let res = parser::parse(reader).unwrap();
-
-  let serialized: String = serde_json::to_string(&res);
 }
